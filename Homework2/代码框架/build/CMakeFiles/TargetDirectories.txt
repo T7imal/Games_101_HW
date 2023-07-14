@@ -1,0 +1,3 @@
+/home/hwc/桌面/Games_101_HW/Homework2/代码框架/build/CMakeFiles/Rasterizer.dir
+/home/hwc/桌面/Games_101_HW/Homework2/代码框架/build/CMakeFiles/edit_cache.dir
+/home/hwc/桌面/Games_101_HW/Homework2/代码框架/build/CMakeFiles/rebuild_cache.dir

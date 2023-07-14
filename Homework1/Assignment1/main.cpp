@@ -70,18 +70,19 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     // Create the projection matrix for the given parameters.
     // Then return it.
 
-    Eigen::Matrix4f Proj2Ortho;  //转换为正交投影
-    Proj2Ortho << -zNear, 0, 0, 0,
+    Eigen::Matrix4f ProjToOrtho;  //转换为正交投影
+    ProjToOrtho << -zNear, 0, 0, 0,
         0, -zNear, 0, 0,
         0, 0, -zNear - zFar, -zNear * zFar,
         0, 0, 1, 0; //zNear, zFar为正
     Eigen::Matrix4f ortho;
+
     ortho << 1 / (zNear * std::tan(eye_fov / 2 / 180.0 * MY_PI) * aspect_ratio), 0, 0, 0,
         0, 1 / (zNear * std::tan(eye_fov / 2 / 180.0 * MY_PI)), 0, 0,
-        0, 0, 2 / (zFar - zNear), (zFar + zNear) / 2,
+        0, 0, 2 / (zNear - zFar), (zFar + zNear) / 2,
         0, 0, 0, 1;
 
-    projection = ortho * Proj2Ortho * projection;
+    projection = ortho * ProjToOrtho * projection;
 
     return projection;
 }

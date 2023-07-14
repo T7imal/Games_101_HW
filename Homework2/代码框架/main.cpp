@@ -7,77 +7,86 @@
 
 constexpr double MY_PI = 3.1415926;
 
-Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
-{
+Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos) {
     Eigen::Matrix4f view = Eigen::Matrix4f::Identity();
 
     Eigen::Matrix4f translate;
-    translate << 1,0,0,-eye_pos[0],
-                 0,1,0,-eye_pos[1],
-                 0,0,1,-eye_pos[2],
-                 0,0,0,1;
+    translate << 1, 0, 0, -eye_pos[0],
+        0, 1, 0, -eye_pos[1],
+        0, 0, 1, -eye_pos[2],
+        0, 0, 0, 1;
 
-    view = translate*view;
+    view = translate * view;
 
     return view;
 }
 
-Eigen::Matrix4f get_model_matrix(float rotation_angle)
-{
+Eigen::Matrix4f get_model_matrix(float rotation_angle) {
     Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
     return model;
 }
 
-Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar)
-{
+Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar) {
     // TODO: Copy-paste your implementation from the previous assignment.
-    Eigen::Matrix4f projection;
+    Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+
+    Eigen::Matrix4f ProjToOrtho;  //转换为正交投影
+    ProjToOrtho << -zNear, 0, 0, 0,
+        0, -zNear, 0, 0,
+        0, 0, -zNear - zFar, -zNear * zFar,
+        0, 0, 1, 0; //zNear, zFar为正
+
+    Eigen::Matrix4f ortho;
+    ortho << 1 / (zNear * std::tan(eye_fov / 2 / 180.0 * MY_PI) * aspect_ratio), 0, 0, 0,
+        0, 1 / (zNear * std::tan(eye_fov / 2 / 180.0 * MY_PI)), 0, 0,
+        0, 0, 2 / (zNear - zFar), (zFar + zNear) / 2,
+        0, 0, 0, 1;
+
+    projection = ortho * ProjToOrtho * projection;
 
     return projection;
 }
 
-int main(int argc, const char** argv)
-{
+int main(int argc, const char** argv) {
     float angle = 0;
     bool command_line = false;
     std::string filename = "output.png";
 
-    if (argc == 2)
-    {
+    if (argc == 2) {
         command_line = true;
         filename = std::string(argv[1]);
     }
 
     rst::rasterizer r(700, 700);
 
-    Eigen::Vector3f eye_pos = {0,0,5};
+    Eigen::Vector3f eye_pos = { 0,0,5 };
 
 
     std::vector<Eigen::Vector3f> pos
-            {
-                    {2, 0, -2},
-                    {0, 2, -2},
-                    {-2, 0, -2},
-                    {3.5, -1, -5},
-                    {2.5, 1.5, -5},
-                    {-1, 0.5, -5}
-            };
+    {
+            {2, 0, -2},
+            {0, 2, -2},
+            {-2, 0, -2},
+            {3.5, -1, -5},
+            {2.5, 1.5, -5},
+            {-1, 0.5, -5}
+    };
 
     std::vector<Eigen::Vector3i> ind
-            {
-                    {0, 1, 2},
-                    {3, 4, 5}
-            };
+    {
+            {0, 1, 2},
+            {3, 4, 5}
+    };
 
     std::vector<Eigen::Vector3f> cols
-            {
-                    {217.0, 238.0, 185.0},
-                    {217.0, 238.0, 185.0},
-                    {217.0, 238.0, 185.0},
-                    {185.0, 217.0, 238.0},
-                    {185.0, 217.0, 238.0},
-                    {185.0, 217.0, 238.0}
-            };
+    {
+            {217.0, 238.0, 185.0},
+            {217.0, 238.0, 185.0},
+            {217.0, 238.0, 185.0},
+            {185.0, 217.0, 238.0},
+            {185.0, 217.0, 238.0},
+            {185.0, 217.0, 238.0}
+    };
 
     auto pos_id = r.load_positions(pos);
     auto ind_id = r.load_indices(ind);
@@ -86,8 +95,7 @@ int main(int argc, const char** argv)
     int key = 0;
     int frame_count = 0;
 
-    if (command_line)
-    {
+    if (command_line) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
         r.set_model(get_model_matrix(angle));
@@ -104,8 +112,7 @@ int main(int argc, const char** argv)
         return 0;
     }
 
-    while(key != 27)
-    {
+    while (key != 27) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
         r.set_model(get_model_matrix(angle));
