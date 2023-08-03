@@ -1,14 +1,13 @@
-#pragma once
+#pragma once 
 
 #include "Vector.hpp"
 
-class Light
-{
+class Light {
 public:
     Light(const Vector3f& p, const Vector3f& i)
         : position(p)
-        , intensity(i)
-    {}
+        , intensity(i) {
+    }
     virtual ~Light() = default;
     Vector3f position;
     Vector3f intensity;
