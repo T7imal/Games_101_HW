@@ -1,0 +1,3 @@
+/home/hwc/桌面/Games_101_HW/Homework6/Assignment6/build/CMakeFiles/RayTracing.dir
+/home/hwc/桌面/Games_101_HW/Homework6/Assignment6/build/CMakeFiles/edit_cache.dir
+/home/hwc/桌面/Games_101_HW/Homework6/Assignment6/build/CMakeFiles/rebuild_cache.dir
