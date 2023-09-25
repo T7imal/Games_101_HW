@@ -1,0 +1,3 @@
+/home/hwc/桌面/Games_101_HW/pa0/CMakeFiles/Transformation.dir
+/home/hwc/桌面/Games_101_HW/pa0/CMakeFiles/edit_cache.dir
+/home/hwc/桌面/Games_101_HW/pa0/CMakeFiles/rebuild_cache.dir
